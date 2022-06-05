@@ -10,7 +10,16 @@ export class UsersRepository {
   constructor(private readonly prisma: PrismaService) {}
 
   public async findAll() {
-    const users = await this.prisma.users.findMany();
+    const users = await this.prisma.users.findMany({
+      include: {
+        posts: {
+          select: {
+            title: true,
+            createdAt: true,
+          },
+        },
+      },
+    });
 
     if (users.length === 0) {
       throw new NotFoundError('Não há usuários cadastrados.');
@@ -23,6 +32,14 @@ export class UsersRepository {
     const user = await this.prisma.users.findUnique({
       where: {
         id,
+      },
+      include: {
+        posts: {
+          select: {
+            title: true,
+            createdAt: true,
+          },
+        },
       },
     });
 
@@ -62,9 +79,11 @@ export class UsersRepository {
       throw new NotFoundError('Código de identificação de usuário inválido.');
     }
 
-    const isExistEmail = await this.prisma.users.findUnique({ where: { email } });
-    if (isExistEmail && isExistEmail.id !== id) {
-      throw new DataBaseError('Usuário com esse email já foi cadastrado.');
+    if (email) {
+      const isExistEmail = await this.prisma.users.findUnique({ where: { email } });
+      if (isExistEmail && isExistEmail.id !== id) {
+        throw new DataBaseError('Usuário com esse email já foi cadastrado.');
+      }
     }
 
     return this.prisma.users.update({

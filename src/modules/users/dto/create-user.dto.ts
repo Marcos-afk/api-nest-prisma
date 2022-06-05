@@ -1,4 +1,4 @@
-import { IsBoolean, IsEmail, IsNotEmpty, IsString, MaxLength, MinLength } from 'class-validator';
+import { IsBoolean, IsEmail, IsNotEmpty, IsOptional, IsString, MaxLength, MinLength } from 'class-validator';
 
 export class CreateUserDto {
   @IsString({ message: 'O tipo do campo nome deve ser uma string' })
@@ -14,5 +14,6 @@ export class CreateUserDto {
   email: string;
 
   @IsBoolean({ message: 'O tipo do campo isAdmin deve ser um boleano' })
+  @IsOptional()
   isAdmin: boolean;
 }
