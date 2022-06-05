@@ -1,4 +1,6 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
+import { DataBaseError } from 'src/common/errors/types/DataBaseError';
+import { NotFoundError } from 'src/common/errors/types/NotFoundError';
 import { PrismaService } from 'src/modules/prisma/prisma.service';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
@@ -11,7 +13,7 @@ export class UsersRepository {
     const users = await this.prisma.users.findMany();
 
     if (users.length === 0) {
-      throw new HttpException('Não há usuários cadastrados.', HttpStatus.NOT_FOUND);
+      throw new NotFoundError('Não há usuários cadastrados.');
     }
 
     return users;
@@ -25,7 +27,7 @@ export class UsersRepository {
     });
 
     if (!user) {
-      throw new HttpException('Código de identificação de usuário inválido.', HttpStatus.NOT_FOUND);
+      throw new NotFoundError('Código de identificação de usuário inválido.');
     }
 
     return user;
@@ -40,7 +42,7 @@ export class UsersRepository {
     });
 
     if (isExistEmail) {
-      throw new HttpException('Usuário com esse email já foi cadastrado.', HttpStatus.BAD_REQUEST);
+      throw new DataBaseError('Usuário com esse email já foi cadastrado.');
     }
 
     return this.prisma.users.create({
@@ -57,12 +59,12 @@ export class UsersRepository {
     });
 
     if (!user) {
-      throw new HttpException('Código de identificação de usuário inválido.', HttpStatus.NOT_FOUND);
+      throw new NotFoundError('Código de identificação de usuário inválido.');
     }
 
     const isExistEmail = await this.prisma.users.findUnique({ where: { email } });
     if (isExistEmail && isExistEmail.id !== id) {
-      throw new HttpException('Usuário com esse email já foi cadastrado.', HttpStatus.BAD_REQUEST);
+      throw new DataBaseError('Usuário com esse email já foi cadastrado.');
     }
 
     return this.prisma.users.update({
@@ -81,7 +83,7 @@ export class UsersRepository {
     });
 
     if (!user) {
-      throw new HttpException('Código de identificação de usuário inválido.', HttpStatus.NOT_FOUND);
+      throw new NotFoundError('Código de identificação de usuário inválido.');
     }
 
     return this.prisma.users.delete({
