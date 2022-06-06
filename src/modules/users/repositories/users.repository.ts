@@ -9,7 +9,7 @@ import { UpdateUserDto } from '../dto/update-user.dto';
 export class UsersRepository {
   constructor(private readonly prisma: PrismaService) {}
 
-  public async findAll() {
+  async findAll() {
     const users = await this.prisma.users.findMany({
       include: {
         posts: {
@@ -28,7 +28,7 @@ export class UsersRepository {
     return users;
   }
 
-  public async findById(id: number) {
+  async findById(id: number) {
     const user = await this.prisma.users.findUnique({
       where: {
         id,
@@ -50,7 +50,7 @@ export class UsersRepository {
     return user;
   }
 
-  public async create(createUserDto: CreateUserDto) {
+  async create(createUserDto: CreateUserDto) {
     const { email } = createUserDto;
     const isExistEmail = await this.prisma.users.findUnique({
       where: {
@@ -67,7 +67,7 @@ export class UsersRepository {
     });
   }
 
-  public async update(id: number, updateUserDto: UpdateUserDto) {
+  async update(id: number, updateUserDto: UpdateUserDto) {
     const { email } = updateUserDto;
     const user = await this.prisma.users.findUnique({
       where: {
@@ -94,7 +94,7 @@ export class UsersRepository {
     });
   }
 
-  public async remove(id: number) {
+  async remove(id: number) {
     const user = await this.prisma.users.findUnique({
       where: {
         id,

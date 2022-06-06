@@ -8,7 +8,7 @@ import { UpdatePostDto } from '../dto/update-post.dto';
 export class PostsRepository {
   constructor(private readonly prisma: PrismaService) {}
 
-  public async findAll() {
+  async findAll() {
     const posts = await this.prisma.posts.findMany({
       include: {
         author: {
@@ -27,7 +27,7 @@ export class PostsRepository {
     return posts;
   }
 
-  public async findById(id: number) {
+  async findById(id: number) {
     const post = await this.prisma.posts.findUnique({
       where: {
         id,
@@ -49,7 +49,7 @@ export class PostsRepository {
     return post;
   }
 
-  public async create(createPostDto: CreatePostDto) {
+  async create(createPostDto: CreatePostDto) {
     const { authorId } = createPostDto;
     const author = await this.prisma.users.findUnique({
       where: {
@@ -66,7 +66,7 @@ export class PostsRepository {
     });
   }
 
-  public async update(id: number, updatePostDto: UpdatePostDto) {
+  async update(id: number, updatePostDto: UpdatePostDto) {
     const { authorId } = updatePostDto;
 
     if (authorId) {
@@ -107,7 +107,7 @@ export class PostsRepository {
     });
   }
 
-  public async delete(id: number) {
+  async delete(id: number) {
     const post = await this.prisma.posts.findUnique({
       where: {
         id,

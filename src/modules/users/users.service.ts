@@ -7,23 +7,23 @@ import { UpdateUserDto } from './dto/update-user.dto';
 export class UsersService {
   constructor(private readonly repository: UsersRepository) {}
 
-  public async findAll() {
-    return await this.repository.findAll();
+  findAll() {
+    return this.repository.findAll();
   }
 
-  public async findById(id: number) {
-    return await this.repository.findById(id);
+  findById(id: number) {
+    return this.repository.findById(id);
   }
 
-  public async create(createUserDto: CreateUserDto) {
-    return await this.repository.create(createUserDto);
+  create(createUserDto: CreateUserDto) {
+    return this.repository.create(createUserDto);
   }
 
-  public async update(id: number, updateUserDto: UpdateUserDto) {
-    return await this.repository.update(id, updateUserDto);
+  update(id: number, updateUserDto: UpdateUserDto) {
+    return this.repository.update(id, updateUserDto);
   }
 
-  public async delete(id: number) {
-    return await this.repository.remove(id);
+  delete(id: number) {
+    return this.repository.remove(id);
   }
 }

@@ -7,23 +7,23 @@ import { PostsRepository } from './repositories/posts.repository';
 export class PostsService {
   constructor(private readonly postsRepository: PostsRepository) {}
 
-  public async findAll() {
+  findAll() {
     return this.postsRepository.findAll();
   }
 
-  public async findById(id: number) {
+  findById(id: number) {
     return this.postsRepository.findById(id);
   }
 
-  public async create(createPostDto: CreatePostDto) {
+  create(createPostDto: CreatePostDto) {
     return this.postsRepository.create(createPostDto);
   }
 
-  public async update(id: number, updatePostDto: UpdatePostDto) {
+  update(id: number, updatePostDto: UpdatePostDto) {
     return this.postsRepository.update(id, updatePostDto);
   }
 
-  public async delete(id: number) {
+  delete(id: number) {
     return this.postsRepository.delete(id);
   }
 }
